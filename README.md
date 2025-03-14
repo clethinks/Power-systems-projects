@@ -5,7 +5,7 @@ Investigating differential relay characteristics (ANSI 87) and sizing current tr
 
 **2. Relay code**
 
-code written in processing to show the Relay ANSI numbers for protection in a power system
+code written in processing/ MATLAB to show the Relay ANSI numbers for protection in a power system
 
 
 **3. Motor analysis**

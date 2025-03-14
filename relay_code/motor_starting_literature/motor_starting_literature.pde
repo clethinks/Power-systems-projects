@@ -45,5 +45,5 @@ void draw() {
   // Footer
   fill(100);
   textAlign(CENTER);
-  text("Simulations conducted in ETAP 2023 | Author: [Your Name]", width / 2, height - margin);
+  text("Simulations conducted in ETAP 2023 | Author:Clement", width / 2, height - margin);
 }

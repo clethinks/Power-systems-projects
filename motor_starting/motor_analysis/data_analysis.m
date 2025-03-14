@@ -1,45 +1,33 @@
-% Step 1: Load the spreadsheet data
-filename = 'motor_currents_spreadsheet.xlsx'; % Change to your actual file name
-data = readtable(filename); % Reads the table with headers
 
-% Step 2: Extract relevant columns and convert them to arrays
-time = data{:, "Time_Sec__"};      % Extract 'Time' column
-motor1 = data{:, "Current_DOL_"};  % Extract 'Motor1' column (DOL)
-motor2 = data{:, "Current_starDelta_"};  % Extract 'Motor2' column (Star-Delta)
+filename = 'motor_currents_spreadsheet.xlsx';
+data = readtable(filename); 
 
-% Step 3: Compute Analysis Metrics
+time = data.Time_Sec__;  
+motor1 = data.Current_DOL_; 
+motor2 = data.Current_starDelta_;  
 
-% (1) Current Difference at Each Time Step
+
+%%analysis
+%current difference
 current_difference = motor1 - motor2;
 
-% (2) Peak Current
+%peak current
 peak_motor1 = max(motor1);
 peak_motor2 = max(motor2);
 
-% (3) Time to Steady-State (Last 10% Considered Steady-State)
-steady_threshold1 = 0.1 * peak_motor1; 
-steady_threshold2 = 0.1 * peak_motor2; 
 
-steady_index_motor1 = find(motor1 < steady_threshold1, 1, 'last');
-steady_index_motor2 = find(motor2 < steady_threshold2, 1, 'last');
-
-steady_time_motor1 = time(steady_index_motor1);
-steady_time_motor2 = time(steady_index_motor2);
-
-% (4) Energy Consumption (Approximate Integration using Trapezoidal Rule)
+% Energy Consumption 
 energy_motor1 = trapz(time, motor1);
 energy_motor2 = trapz(time, motor2);
 
-% (5) Rate of Change of Current (Derivative)
-dt = diff(time); % Time intervals
-dI_motor1 = diff(motor1) ./ dt; % Current rate of change for Motor 1
-dI_motor2 = diff(motor2) ./ dt; % Current rate of change for Motor 2
+% Rate of Change of Current
+dt = diff(time); 
+dI_motor1 = diff(motor1) ./ dt; 
+dI_motor2 = diff(motor2) ./ dt; 
 
-% Step 4: Display Results
+% Display Results
 fprintf('Peak Current (DOL): %.2f A\n', peak_motor1);
 fprintf('Peak Current (Star-Delta): %.2f A\n', peak_motor2);
-fprintf('Time to Steady-State (DOL): %.2f s\n', steady_time_motor1);
-fprintf('Time to Steady-State (Star-Delta): %.2f s\n', steady_time_motor2);
 fprintf('Energy Consumption (DOL): %.2f A·s\n', energy_motor1);
 fprintf('Energy Consumption (Star-Delta): %.2f A·s\n', energy_motor2);
 
